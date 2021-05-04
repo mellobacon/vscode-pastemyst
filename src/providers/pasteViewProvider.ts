@@ -1,55 +1,77 @@
 import * as vscode from "vscode";
 import * as pastemyst from "pastemyst-ts";
 
-import { pasteStorage } from "../data/pasteStorage";
+import pasteStore from "../data/pasteStore";
 
-export class PasteViewProvider
+/**
+ * Represents a tree view for paste objects.
+ */
+export default new (class PasteViewProvider
     implements vscode.TreeDataProvider<IPasteViewItem> {
-    constructor() {}
-
     private _onDidChangeTreeData: vscode.EventEmitter<
         IPasteViewItem | undefined | null | void
     > = new vscode.EventEmitter<IPasteViewItem | undefined | null | void>();
-    readonly onDidChangeTreeData: vscode.Event<
+    public readonly onDidChangeTreeData: vscode.Event<
         IPasteViewItem | undefined | null | void
     > = this._onDidChangeTreeData.event;
 
-    getTreeItem(element: IPasteViewItem): vscode.TreeItem {
+    /**
+     * Converts a paste view item into a tree view item.
+     */
+    public getTreeItem(element: IPasteViewItem): vscode.TreeItem {
         return element as vscode.TreeItem;
     }
 
-    getChildren(element?: IPasteViewItem): IPasteViewItem[] {
+    /**
+     * Retrieves the children of the specified element, Or the root elements if no
+     * element was specified.
+     */
+    public getChildren(element?: IPasteViewItem): IPasteViewItem[] {
         if (element) {
-            if (element instanceof PasteViewItem) {
-                const pasties = element.paste.pasties;
-                return pasties.map((p) => new PastyViewItem(p));
-            } else {
-                return [];
-            }
+            return element instanceof PasteViewItem
+                ? element.paste.pasties.map(
+                      (p) => new PastyViewItem(p, element.paste)
+                  )
+                : [];
         } else {
-            const pastes = Array.from(pasteStorage.values());
-            return pastes.map((p) => new PasteViewItem(p));
+            return pasteStore.all().map((p) => new PasteViewItem(p));
         }
     }
 
+    /**
+     * Refreshes the view.
+     */
     refresh(): void {
         this._onDidChangeTreeData.fire();
     }
-}
-export default new PasteViewProvider();
+})();
 
+/**
+ * Represents the common interface of items in the paste view.
+ */
 export interface IPasteViewItem {}
 
+/**
+ * Represents a view item of a paste.
+ */
 export class PasteViewItem extends vscode.TreeItem implements IPasteViewItem {
     constructor(public paste: pastemyst.Paste) {
-        super(paste.title, vscode.TreeItemCollapsibleState.Collapsed);
+        super(paste.title, vscode.TreeItemCollapsibleState.Expanded);
+
+        this.iconPath = new vscode.ThemeIcon("files");
         this.contextValue = "paste";
     }
 }
 
+/**
+ * Represents a view item of a pasty.
+ */
 export class PastyViewItem extends vscode.TreeItem implements IPasteViewItem {
-    constructor(public pasty: pastemyst.Pasty) {
+    constructor(public pasty: pastemyst.Pasty, public parent: pastemyst.Paste) {
         super(pasty.title, vscode.TreeItemCollapsibleState.None);
+
+        this.iconPath = new vscode.ThemeIcon("file-code");
         this.contextValue = "pasty";
+        this.description = pasty.language;
     }
 }

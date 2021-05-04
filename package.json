@@ -51,12 +51,8 @@
             {
                 "command": "pastemyst.commands.viewer.unload",
                 "title": "Unload",
-                "enablement": "view == pastemyst.viewer"
-            },
-            {
-                "command": "pastemyst.commands.viewer.show",
-                "title": "Open",
-                "enablement": "view == pastemyst.viewer"
+                "enablement": "view == pastemyst.viewer",
+                "icon": "$(diff-review-close)"
             }
         ],
         "menus": {
@@ -65,10 +61,6 @@
                     "command": "pastemyst.commands.viewer.unload",
                     "when": "view == pastemyst.viewer && viewItem == paste",
                     "group": "inline"
-                },
-                {
-                    "command": "pastemyst.commands.viewer.show",
-                    "when": "view == pastemyst.viewer && viewItem == pasty"
                 }
             ]
         }

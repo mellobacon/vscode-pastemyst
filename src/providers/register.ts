@@ -1,7 +1,11 @@
 import * as vscode from "vscode";
-import pasteViewProvider from "./pasteViewProvider";
-import { PastyDocumentProvider } from "./pastyDocumentProvider";
 
+import pasteViewProvider from "./pasteViewProvider";
+import pastyDocumentProvider from "./pastyDocumentProvider";
+
+/**
+ * Registers the extension's providers into the editor.
+ */
 export function registerProviders(): vscode.Disposable[] {
     const viewer = vscode.window.createTreeView("pastemyst.viewer", {
         treeDataProvider: pasteViewProvider,
@@ -19,7 +23,7 @@ export function registerProviders(): vscode.Disposable[] {
         viewer,
         vscode.workspace.registerTextDocumentContentProvider(
             "pastemyst",
-            new PastyDocumentProvider()
+            pastyDocumentProvider
         ),
     ];
 }
