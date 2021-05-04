@@ -11,9 +11,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onView:pastemyst.viewActions",
-        "onView:pastemyst.viewExplorer",
-        "onCommand:pastemyst.viewPaste"
+        "onView:pastemyst.viewer",
+        "onCommand:pastemyst.commands.view"
     ],
     "main": "./dist/extension.js",
     "repository": {
@@ -24,12 +23,8 @@
         "views": {
             "pastemyst": [
                 {
-                    "id": "pastemyst.viewActions",
-                    "name": "PasteMyst Actions"
-                },
-                {
-                    "id": "pastemyst.viewExplorer",
-                    "name": "PasteMyst Viewer"
+                    "id": "pastemyst.viewer",
+                    "name": "Paste Viewer"
                 }
             ]
         },
@@ -37,8 +32,43 @@
             "activitybar": [
                 {
                     "id": "pastemyst",
-                    "icon": "resources/pastemyst.svg",
+                    "icon": "./resources/pastemyst.svg",
                     "title": "PasteMyst"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "view": "pastemyst.viewer",
+                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)"
+            }
+        ],
+        "commands": [
+            {
+                "command": "pastemyst.commands.view",
+                "title": "PasteMyst: View Paste"
+            },
+            {
+                "command": "pastemyst.commands.viewer.unload",
+                "title": "Unload",
+                "enablement": "view == pastemyst.viewer"
+            },
+            {
+                "command": "pastemyst.commands.viewer.show",
+                "title": "Open",
+                "enablement": "view == pastemyst.viewer"
+            }
+        ],
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "pastemyst.commands.viewer.unload",
+                    "when": "view == pastemyst.viewer && viewItem == paste",
+                    "group": "inline"
+                },
+                {
+                    "command": "pastemyst.commands.viewer.show",
+                    "when": "view == pastemyst.viewer && viewItem == pasty"
                 }
             ]
         }
@@ -66,5 +96,8 @@
         "ts-loader": "^8.0.14",
         "webpack": "^5.19.0",
         "webpack-cli": "^4.4.0"
+    },
+    "dependencies": {
+        "pastemyst-ts": "^1.0.3"
     }
 }
