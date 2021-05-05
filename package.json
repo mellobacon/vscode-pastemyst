@@ -63,6 +63,16 @@
                     "group": "inline"
                 }
             ]
+        },
+        "configuration": {
+            "title": "PasteMyst",
+            "properties": {
+                "pastemyst.apiToken": {
+                    "type": "string",
+                    "default": "",
+                    "description": "The API token to authorize the PasteMyst service with. Specifying a valid token here allows you to fetch your private pastes, and also create new pastes in your own profile. Note that currently you need to restart VSCode for the changes to take effect."
+                }
+            }
         }
     },
     "scripts": {
