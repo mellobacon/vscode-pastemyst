@@ -12,7 +12,8 @@
     ],
     "activationEvents": [
         "onView:pastemyst.viewer",
-        "onCommand:pastemyst.commands.view"
+        "onCommand:pastemyst.commands.view",
+        "onCommand:pastemyst.commands.create"
     ],
     "main": "./dist/extension.js",
     "repository": {
@@ -40,13 +41,17 @@
         "viewsWelcome": [
             {
                 "view": "pastemyst.viewer",
-                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)"
+                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create new paste](command:pastemyst.commands.create)"
             }
         ],
         "commands": [
             {
                 "command": "pastemyst.commands.view",
                 "title": "PasteMyst: View Paste"
+            },
+            {
+                "command": "pastemyst.commands.create",
+                "title": "PasteMyste: Create Paste"
             },
             {
                 "command": "pastemyst.commands.viewer.unload",
