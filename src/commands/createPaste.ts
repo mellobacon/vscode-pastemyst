@@ -7,8 +7,8 @@ export default async function createPaste(): Promise<void>{
 
     // Collect all workspace files as a quickpick item
     let items : vscode.QuickPickItem[] = [];
-    files.forEach(ele => {
-        let item : vscode.QuickPickItem = {label: ele.fileName, description: ele.languageId};
+    files.forEach(file => {
+        let item : vscode.QuickPickItem = {label: file.fileName, description: file.languageId, detail: file.getText()};
         items.push(item);
     });
 
@@ -19,19 +19,19 @@ export default async function createPaste(): Promise<void>{
     p.canSelectMany = true;
     p.show();
     p.onDidAccept(() => {
-        sendPaste();
+        sendPaste(p.selectedItems);
         p.hide();
     });
     
-    pastemyst.authorize("SuEYQoR8bn0bHMjZj5WqEl/8ehZvIvpE0vue11kEmHY=");
-    function sendPaste(){
+    
+    function sendPaste(selection : readonly vscode.QuickPickItem[]){
         // Make a pasty for each file
         let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
-        files.forEach(file => {
-            let filename = file.fileName.split("\\");
+
+        selection.forEach(p => {
+            let filename = p.label.split("\\");
             let title = filename[filename.length - 1];
-            let lang = "autodetect"; // something something temporary
-            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang, code: file.getText()};
+            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: "autodetect", code: p.detail!};
             pastes.push(pst);
         });
 
