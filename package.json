@@ -95,6 +95,7 @@
         "webpack-cli": "^4.4.0"
     },
     "dependencies": {
+        "open": "^8.0.8",
         "pastemyst-ts": "^1.0.3"
     }
 }
