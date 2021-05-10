@@ -25,4 +25,4 @@ This extension provides a way to paste to the website without leaving your IDE.
     - This will give way for creating private pastes, pastes with tags, and other features
 - The ability to edit pastes
 
-<a src="https://paste.myst.rs/">Check out the PasteMyst website here.</a>
+Check out the PasteMyst website here: https://paste.myst.rs/
