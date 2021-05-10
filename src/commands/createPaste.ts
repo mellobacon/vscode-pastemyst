@@ -23,7 +23,7 @@ export default async function createPaste(): Promise<void>{
         p.hide();
     });
 
-    // yes this whole set thing is jank. im so sorry xd
+    // yes this whole set thing is jank i know. im so sorry xd
     function setPaste(selection : readonly vscode.QuickPickItem[]){
         setTitle(selection);
     }
@@ -37,7 +37,7 @@ export default async function createPaste(): Promise<void>{
     };
 
     async function setDuration(selection : readonly vscode.QuickPickItem[], t : any){
-        let title = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"]);
+        let title = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
         sendPaste(selection, t, title);
     }
     
@@ -66,7 +66,15 @@ export default async function createPaste(): Promise<void>{
             pasties: [...pastes]
         }).then(p => {
             // Make sure there is no error in making a paste
-            if (!paste){
+            if (pastes.length === 0){
+                vscode.window.showErrorMessage("Error: Cannot create paste. No files selected.");
+                return;
+            }
+            else if (p?._id === undefined){
+                vscode.window.showErrorMessage("Error: Cannot create paste. Paste Id is undefined.");
+                return;
+            }
+            else if (!paste){
                 vscode.window.showErrorMessage("Error: Cannot create paste.");
                 return;
             }
