@@ -12,32 +12,57 @@ export default async function createPaste(): Promise<void>{
         items.push(item);
     });
 
-    // Show the list of files in the workspace
+    // Select files to paste
     let p = vscode.window.createQuickPick();
     p.placeholder = "Select files to send to PasteMyst";
     p.items = [...items];
     p.canSelectMany = true;
     p.show();
     p.onDidAccept(() => {
-        sendPaste(p.selectedItems);
+        setPaste(p.selectedItems);
         p.hide();
     });
-    
-    
-    function sendPaste(selection : readonly vscode.QuickPickItem[]){
-        // Make a pasty for each file
-        let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
 
+    // yes this whole set thing is jank. im so sorry xd
+    function setPaste(selection : readonly vscode.QuickPickItem[]){
+        setTitle(selection);
+    }
+
+    async function setTitle(selection : readonly vscode.QuickPickItem[]){
+        let title = await vscode.window.showInputBox({
+            prompt: "Enter paste title. Leave this blank for no title.",
+            placeHolder: "Title",
+        });
+        setDuration(selection, title);
+    };
+
+    async function setDuration(selection : readonly vscode.QuickPickItem[], t : any){
+        let title = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"]);
+        sendPaste(selection, t, title);
+    }
+    
+    // Send the paste to PasteMyst
+    function sendPaste(selection : readonly vscode.QuickPickItem[], title : string, duration : any){
+
+        let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
+        
+        // Make a pasty for each file
         selection.forEach(p => {
             let filename = p.label.split("\\");
             let title = filename[filename.length - 1];
-            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: "autodetect", code: p.detail!};
+            let langext = title.split(".");
+            let lang = "autodetect"; // autodetect by default until I get lang detection working
+            pastemyst.data.getLanguageByExtension(langext[langext.length - 1]).then(l => {
+                lang = l?.name!;
+            });
+            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang, code: p.detail!};
             pastes.push(pst);
         });
 
         // Create a new paste of pasties
         let paste = pastemyst.pastes.createPaste({
-            isPrivate: true,
+            title: title,
+            expiresIn: duration,
             pasties: [...pastes]
         }).then(p => {
             // Make sure there is no error in making a paste
