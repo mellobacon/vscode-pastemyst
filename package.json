@@ -2,7 +2,7 @@
     "name": "vscode-pastemyst",
     "displayName": "vscode-pastemyst",
     "description": "PasteMyst as a Visual Studio Code Extension",
-    "icon": "../resources/pastemyst.jpg",
+    "icon": "resources/pastemyst.jpg",
     "publisher": "mellobacon",
     "version": "1.0.0",
     "engines": {
@@ -14,7 +14,8 @@
     "activationEvents": [
         "onView:pastemyst.viewer",
         "onCommand:pastemyst.commands.view",
-        "onCommand:pastemyst.commands.create"
+        "onCommand:pastemyst.commands.create",
+        "onCommand:pastemyst.commands.createBySelection"
     ],
     "main": "./dist/extension.js",
     "repository": {
@@ -42,7 +43,7 @@
         "viewsWelcome": [
             {
                 "view": "pastemyst.viewer",
-                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create new paste](command:pastemyst.commands.create)"
+                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create new paste](command:pastemyst.commands.create)\n[Create new paste by selection](command:pastemyst.commands.createBySelection)"
             }
         ],
         "commands": [
@@ -53,6 +54,10 @@
             {
                 "command": "pastemyst.commands.create",
                 "title": "PasteMyste: Create Paste"
+            },
+            {
+                "command": "pastemyst.commands.createBySelection",
+                "title": "PasteMyste: Create Paste By Selection"
             },
             {
                 "command": "pastemyst.commands.viewer.unload",
@@ -96,6 +101,7 @@
         "webpack-cli": "^4.4.0"
     },
     "dependencies": {
+        "copy-to-clipboard": "^3.3.1",
         "open": "^8.0.8",
         "pastemyst-ts": "^1.0.3"
     }
