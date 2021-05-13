@@ -14,7 +14,7 @@ import * as authtoken from "./getAuthToken";
 export default async function viewPaste(): Promise<void> {
     // Prompts for an ID.
     const pasteId = await vscode.window.showInputBox({
-        prompt: "Enter the ID of the paste you want to view.",
+        prompt: "Enter the ID of the paste you want to view. Example: chl1mswb",
         placeHolder: "Paste ID",
     });
 

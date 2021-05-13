@@ -44,7 +44,7 @@
         "viewsWelcome": [
             {
                 "view": "pastemyst.viewer",
-                "contents": "No pastes retrieved yet.\n[Get New Paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create New Paste](command:pastemyst.commands.create)\n[Create New Paste by Selection](command:pastemyst.commands.createBySelection)\n*Optional: Provide your authotization token. This will enable private paste creation and retrieval. (This is found under profile > settings > api on the website)*\n[Register Auth Token](command:pastemyst.commands.getAuthToken)"
+                "contents": "No pastes retrieved yet.\n(Valid ID: paste.myst.rs/theid)\n[Get New Paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create New Paste](command:pastemyst.commands.create)\n[Create New Paste by Selection](command:pastemyst.commands.createBySelection)\n*Optional: Provide your authotization token. This will enable private paste creation and retrieval. (This is found under profile > settings > api on the website)*\n[Register Auth Token](command:pastemyst.commands.getAuthToken)"
             }
         ],
         "commands": [
