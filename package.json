@@ -15,7 +15,8 @@
         "onView:pastemyst.viewer",
         "onCommand:pastemyst.commands.view",
         "onCommand:pastemyst.commands.create",
-        "onCommand:pastemyst.commands.createBySelection"
+        "onCommand:pastemyst.commands.createBySelection",
+        "onCommand:pastemyst.commands.getAuthToken"
     ],
     "main": "./dist/extension.js",
     "repository": {
@@ -43,7 +44,7 @@
         "viewsWelcome": [
             {
                 "view": "pastemyst.viewer",
-                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create new paste](command:pastemyst.commands.create)\n[Create new paste by selection](command:pastemyst.commands.createBySelection)"
+                "contents": "No pastes retrieved yet.\n[Get new paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create new paste](command:pastemyst.commands.create)\n[Create new paste by selection](command:pastemyst.commands.createBySelection)\n*Optional: Provide your authotization token. This will enable private paste creation and retrieval. (This is found under profile > settings > api on the website)*\n[Provide auth token](command:pastemyst.commands.getAuthToken)"
             }
         ],
         "commands": [
@@ -53,11 +54,15 @@
             },
             {
                 "command": "pastemyst.commands.create",
-                "title": "PasteMyste: Create Paste"
+                "title": "PasteMyst: Create Paste"
             },
             {
                 "command": "pastemyst.commands.createBySelection",
-                "title": "PasteMyste: Create Paste By Selection"
+                "title": "PasteMyst: Create Paste By Selection"
+            },
+            {
+                "command": "pastemyst.commands.getAuthToken",
+                "title": "PasteMyst: Token"
             },
             {
                 "command": "pastemyst.commands.viewer.unload",
