@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as pastemyst from "pastemyst-ts";
 import * as open from "open";
+import * as authtoken from "./getAuthToken";
 
 export default async function createPasteBySelection(): Promise<void>{
 
@@ -23,7 +24,7 @@ export default async function createPasteBySelection(): Promise<void>{
             getSelection();
 
             // Make sure there is text selected
-            if (code === ""){
+            if (code === "" || undefined){
                 vscode.window.showErrorMessage("Error: Cannot create paste. No selection provided");
                 return;
             }
@@ -93,6 +94,13 @@ export default async function createPasteBySelection(): Promise<void>{
     }
 
     function createPaste(pastetitle : string, duration : any){
+
+        // Authorize token if provided
+        const token = authtoken.getToken();
+        if (token !== undefined){
+            pastemyst.authorize(token);
+        }
+
         // Create paste
         let paste = pastemyst.pastes.createPaste({
             title: pastetitle,

@@ -6,6 +6,8 @@ import pasteStore from "../data/pasteStore";
 import languageStore from "../data/languageStore";
 import { openPastyDocument } from "../utils/editor";
 
+import * as authtoken from "./getAuthToken";
+
 /**
  * Prompts the user for a paste ID and views it afterwards.
  */
@@ -21,13 +23,19 @@ export default async function viewPaste(): Promise<void> {
         return;
     }
 
+    // Authorize token if provided.
+    const token = authtoken.getToken();
+    if (token !== undefined){
+        pastemyst.authorize(token);
+    }
+
     // Fetch the paste from the API.
     const paste = await pastemyst.pastes.getPaste(pasteId);
 
     // Ensure that a paste was found.
     if (!paste) {
         vscode.window.showErrorMessage(
-            `A paste with the ID '${pasteId}' could not be found.`
+            `A paste with the ID '${pasteId}' could not be found. (Is it a private paste?)`
         );
         return;
     }
