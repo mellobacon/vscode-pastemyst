@@ -31,16 +31,20 @@ export default async function createPaste(): Promise<void>{
     }
 
     async function setTitle(selection : readonly vscode.QuickPickItem[]){
-        let title = await vscode.window.showInputBox({
+        let pastetitle = await vscode.window.showInputBox({
             prompt: "Enter paste title. Leave this blank for no title.",
             placeHolder: "Title",
         });
-        setDuration(selection, title);
+        if (pastetitle !== undefined){
+            setDuration(selection, pastetitle);
+        }
     };
 
-    async function setDuration(selection : readonly vscode.QuickPickItem[], t : any){
-        let title = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
-        sendPaste(selection, t, title);
+    async function setDuration(selection : readonly vscode.QuickPickItem[], title : any){
+        let duration = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
+        if (duration !== undefined){
+            sendPaste(selection, title, duration);
+        }
     }
 
     // Send the paste to PasteMyst
