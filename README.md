@@ -23,11 +23,12 @@ This extension provides a way to paste to the website without leaving your IDE.
     - Create pastes and send them to your account
 
 # Known Issues
-- Retrieving a paste may a bit wonky. This is being tested.
 - When a paste is made, the language is set to "autodetect" by default. This will output the wrong language on the website. This is an ongoing issue on PasteMyst. A workaround is in the works. This does not affect paste content.
 
 # Planned Features
 - The ability to edit pastes
+
+If you have more, I am open to suggestions!
 
 ## Credits
 
