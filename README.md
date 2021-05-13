@@ -29,10 +29,11 @@ This extension provides a way to paste to the website without leaving your IDE.
 # Planned Features
 - The ability to edit pastes
 
-Check out the PasteMyst website here: https://paste.myst.rs/
-
-#### Credits
+### Credits
 
 - [CodeMyst](https://github.com/CodeMyst) - PasteMyst
 
 - [YilianSource](https://github.com/yiliansource) - API Wrapper
+
+####
+Check out the PasteMyst website here: https://paste.myst.rs/
