@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as pastemyst from "pastemyst-ts";
 import * as open from "open";
+import * as authtoken from "./getAuthToken";
 
 export default async function createPaste(): Promise<void>{
 
@@ -41,7 +42,7 @@ export default async function createPaste(): Promise<void>{
         let title = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
         sendPaste(selection, t, title);
     }
-    
+
     // Send the paste to PasteMyst
     function sendPaste(selection : readonly vscode.QuickPickItem[], title : string, duration : any){
 
@@ -60,9 +61,16 @@ export default async function createPaste(): Promise<void>{
             pastes.push(pst);
         });
 
+        // Authorize token if provided
+        const token = authtoken.getToken();
+        if (token !== undefined){
+            pastemyst.authorize(token);
+        }
+
         // Create a new paste of pasties
         let paste = pastemyst.pastes.createPaste({
             title: title,
+            isPrivate: false,
             expiresIn: duration,
             pasties: [...pastes]
         }).then(p => {
