@@ -2,7 +2,7 @@
     "name": "vscode-pastemyst",
     "displayName": "vscode-pastemyst",
     "description": "PasteMyst as a Visual Studio Code Extension",
-    "icon": "resources/pastemyst.jpg",
+    "icon": "resources/pastemyst.png",
     "publisher": "mellobacon",
     "version": "1.0.0",
     "engines": {
