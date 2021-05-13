@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import * as pastemyst from "pastemyst-ts";
 
 let token : string | undefined;
 export default async function getAuthToken(): Promise<void>{
@@ -9,12 +8,19 @@ export default async function getAuthToken(): Promise<void>{
         placeHolder: "Api token",
         password: true
     });
-    if (token === ""){
+    if (token === "" || undefined){
         vscode.window.showErrorMessage("No token provided");
         return;
     }
-    // put token check here
-    vscode.window.showInformationMessage("Token successfully authorized!");
+    if (token){
+        // Check for valid token
+        if ((/(\w)|(\W)/.test(token) && token?.length === 44) === false){
+            vscode.window.showErrorMessage("Invalid token");
+        }
+        else {
+            vscode.window.showInformationMessage("Token successfully authorized!");
+        }
+    }
 }
 
 export function getToken() : string | undefined{
