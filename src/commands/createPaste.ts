@@ -3,6 +3,7 @@ import * as pastemyst from "pastemyst-ts";
 import * as open from "open";
 
 export default async function createPaste(): Promise<void>{
+
     const files = vscode.workspace.textDocuments;
 
     // Collect all workspace files as a quickpick item
@@ -65,6 +66,7 @@ export default async function createPaste(): Promise<void>{
             expiresIn: duration,
             pasties: [...pastes]
         }).then(p => {
+
             // Make sure there is no error in making a paste
             if (pastes.length === 0){
                 vscode.window.showErrorMessage("Error: Cannot create paste. No files selected.");
@@ -82,8 +84,8 @@ export default async function createPaste(): Promise<void>{
             // Send ye to the pastemyst link
             let uri = `https://paste.myst.rs/${p?._id}`;
             vscode.window
-            .showInformationMessage("Paste successfully created at: " + uri + "!", "Open page")
+            .showInformationMessage(`Paste successfully created at: ${uri}!`, "Open page")
             .then(() => {open(uri);});
-            });
+        });
     }
 }
