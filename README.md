@@ -1,6 +1,6 @@
 # vscode-pastemyst
 
-PasteMyst is a simple website for sharing code - Now as a Visual Studio Code extension.
+[PasteMyst](https://paste.myst.rs/) is a simple website for sharing code - Now as a Visual Studio Code extension.
 
 This extension provides a way to paste to the website without leaving your IDE.
 
@@ -31,9 +31,9 @@ This extension provides a way to paste to the website without leaving your IDE.
 
 ## Credits
 
-- [CodeMyst](https://github.com/CodeMyst) - PasteMyst
+- CodeMyst - [PasteMyst](https://github.com/codemyst/pastemyst)
 
-- [YilianSource](https://github.com/yiliansource) - API Wrapper
+- YilianSource - [API Wrapper](https://github.com/YilianSource/pastemyst-ts)
 
 ##
 Check out the PasteMyst website here: https://paste.myst.rs/
