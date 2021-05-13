@@ -33,7 +33,7 @@ This extension provides a way to paste to the website without leaving your IDE.
 
 - CodeMyst - [PasteMyst](https://github.com/codemyst/pastemyst)
 
-- YilianSource - [API Wrapper](https://github.com/YilianSource/pastemyst-ts)
+- YilianSource - [TS API Wrapper](https://github.com/YilianSource/pastemyst-ts)
 
 ##
 Check out the PasteMyst website here: https://paste.myst.rs/
