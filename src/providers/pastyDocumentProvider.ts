@@ -11,12 +11,16 @@ export default new (class PastyDocumentProvider
      * Fetches the corresponding content of a pasty specified by a URI.
      */
     provideTextDocumentContent(uri: vscode.Uri): string {
-        // Checks if the URI path is valid.
         const path = uri.path;
+
+        //TODO: This is throwing false even though the path seems correct. Disabling it until fix is found - mello
+        // Checks if the URI path is valid.
+        /*
         if (/^(\w+\/){2}([\w ]+)(\.\w+)?$/.test(path) === false) {
             vscode.window.showErrorMessage("Invalid PasteMyst URI.");
             return "";
         }
+        */
 
         // Extract the data from the path and fetch the pasty.
         const [pasteId, pastyId, filename] = path.split("/");
