@@ -85,7 +85,7 @@ export default async function createPaste(): Promise<void>{
                 return;
             }
             else if (p?._id === undefined){
-                vscode.window.showErrorMessage("Error: Cannot create paste. Paste Id is undefined.");
+                vscode.window.showErrorMessage("Error: Cannot create paste. Paste ID is undefined.");
                 return;
             }
             else if (!paste){
