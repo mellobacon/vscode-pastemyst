@@ -48,7 +48,7 @@ export default async function createPaste(): Promise<void>{
     }
 
     // Send the paste to PasteMyst
-    function sendPaste(selection : readonly vscode.QuickPickItem[], title : string, duration : any){
+    function sendPaste(selection : readonly vscode.QuickPickItem[], pastetitle : string, duration : any){
 
         let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
         
@@ -73,7 +73,7 @@ export default async function createPaste(): Promise<void>{
 
         // Create a new paste of pasties
         let paste = pastemyst.pastes.createPaste({
-            title: title,
+            title: pastetitle,
             isPrivate: false,
             expiresIn: duration,
             pasties: [...pastes]
