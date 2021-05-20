@@ -6,15 +6,13 @@ import * as authtoken from "./getAuthToken";
 export default async function createPasteBySelection(): Promise<void>{
 
     let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
-    let title : string;
-    let lang : string = "autodetect";
     let code : string;
 
     // Prompt user for selection
     promptUser();
     
     async function promptUser(){
-        await vscode.window.showInformationMessage("Select text to send to PasteMyst", "OK")
+        await vscode.window.showInformationMessage("Select text to send to PasteMyst. Press OK when done.", "OK")
         .then(next => {
 
             // Dont continue if the user closes the prompt
@@ -42,12 +40,12 @@ export default async function createPasteBySelection(): Promise<void>{
         });
     };
 
-    function getSelection(){
+    async function getSelection(){
         let editor = vscode.window.activeTextEditor;
 
         // Get the file name
         let filename = editor?.document.fileName.split("\\")!;
-        title = filename[filename?.length - 1];
+        let title = filename[filename?.length - 1];
 
         // User gets selection
         let selection = editor?.selections;
@@ -66,6 +64,9 @@ export default async function createPasteBySelection(): Promise<void>{
             if (selectedtext === "" || selectedtext === "\n") { return; }
             text.push(`${selectedtext}\n...\n`);
         });
+
+        let langext = title.split(".");
+        let lang = await pastemyst.data.getLanguageByExtension(langext[langext.length - 1]);
         
         code = text.join("\n");
 
@@ -75,11 +76,11 @@ export default async function createPasteBySelection(): Promise<void>{
         }
 
         // Create Pasties
-        let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang, code: code};
+        let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: code};
         pastes.push(pst);
     };
 
-    // yes yes something something still jank
+    // TODO: Needs to be refactored
     async function setTitle(){
         let pastetitle = await vscode.window.showInputBox({
             prompt: "Enter paste title. Leave this blank for no title.",
@@ -89,7 +90,7 @@ export default async function createPasteBySelection(): Promise<void>{
     };
 
     async function setDuration(pastetitle : any){
-        let duration = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
+        let duration = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'never' by default."});
         createPaste(pastetitle, duration);
     }
 
@@ -122,7 +123,7 @@ export default async function createPasteBySelection(): Promise<void>{
                 return;
             }
             
-            // Send ye to the pastemyst link
+            // Generate PasteMyst link
             let uri = `https://paste.myst.rs/${p?._id}`;
             vscode.window
             .showInformationMessage(`Paste successfully created at: ${uri}!`, "Open page")

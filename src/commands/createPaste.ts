@@ -20,12 +20,13 @@ export default async function createPaste(): Promise<void>{
     p.items = [...items];
     p.canSelectMany = true;
     p.show();
+
     p.onDidAccept(() => {
         setPaste(p.selectedItems);
         p.hide();
     });
 
-    // yes this whole set thing is jank i know. im so sorry xd
+    // TODO: Needs to be refactored
     function setPaste(selection : readonly vscode.QuickPickItem[]){
         setTitle(selection);
     }
@@ -41,29 +42,28 @@ export default async function createPaste(): Promise<void>{
     };
 
     async function setDuration(selection : readonly vscode.QuickPickItem[], title : any){
-        let duration = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'Never' by default."});
+        let duration = await vscode.window.showQuickPick(["never", "1h", "2h", "10h", "1d", "2d", "1w", "1m", "1y"], {placeHolder: "Choose expiration time. 'never' by default."});
         if (duration !== undefined){
             sendPaste(selection, title, duration);
         }
     }
 
     // Send the paste to PasteMyst
-    function sendPaste(selection : readonly vscode.QuickPickItem[], pastetitle : string, duration : any){
+    async function sendPaste(selection : readonly vscode.QuickPickItem[], pastetitle : string, duration : any){
 
         let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
-        
+
         // Make a pasty for each file
-        selection.forEach(p => {
+        for (const p of selection){
             let filename = p.label.split("\\");
             let title = filename[filename.length - 1];
+
             let langext = title.split(".");
-            let lang = "autodetect"; // autodetect by default until I get lang detection working
-            pastemyst.data.getLanguageByExtension(langext[langext.length - 1]).then(l => {
-                lang = l?.name!;
-            });
-            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang, code: p.detail!};
+            let lang = await pastemyst.data.getLanguageByExtension(langext[langext.length - 1]);
+
+            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: p.detail!};
             pastes.push(pst);
-        });
+        }
 
         // Authorize token if provided
         const token = authtoken.getToken();
@@ -93,7 +93,7 @@ export default async function createPaste(): Promise<void>{
                 return;
             }
             
-            // Send ye to the pastemyst link
+            // Generate PasteMyst link
             let uri = `https://paste.myst.rs/${p?._id}`;
             vscode.window
             .showInformationMessage(`Paste successfully created at: ${uri}!`, "Open page")
