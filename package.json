@@ -16,7 +16,8 @@
         "onCommand:pastemyst.commands.view",
         "onCommand:pastemyst.commands.create",
         "onCommand:pastemyst.commands.createBySelection",
-        "onCommand:pastemyst.commands.getAuthToken"
+        "onCommand:pastemyst.commands.getAuthToken",
+        "onCommand:pastemyst.commands.viewAll"
     ],
     "main": "./dist/extension.js",
     "repository": {
@@ -44,13 +45,17 @@
         "viewsWelcome": [
             {
                 "view": "pastemyst.viewer",
-                "contents": "No pastes retrieved yet.\n(Valid ID: paste.myst.rs/theid)\n[Get New Paste](command:pastemyst.commands.view)\nSend a paste to PasteMyst\n[Create New Paste](command:pastemyst.commands.create)\n[Create New Paste by Selection](command:pastemyst.commands.createBySelection)\n*Optional: Provide your authotization token. This will enable private paste creation and retrieval. (This is found under profile > settings > api on the website)*\n[Register Auth Token](command:pastemyst.commands.getAuthToken)"
+                "contents": "No pastes retrieved yet.\n(Valid ID: paste.myst.rs/theid)\n[Get New Paste](command:pastemyst.commands.view)\n[Get Pastes From Account](command:pastemyst.commands.viewAll)\nSend a paste to PasteMyst\n[Create New Paste](command:pastemyst.commands.create)\n[Create New Paste by Selection](command:pastemyst.commands.createBySelection)\n*Optional: Provide your authotization token. This will enable private paste creation and retrieval. (This is found under profile > settings > api on the website)*\n[Register Auth Token](command:pastemyst.commands.getAuthToken)"
             }
         ],
         "commands": [
             {
                 "command": "pastemyst.commands.view",
                 "title": "PasteMyst: View Paste"
+            },
+            {
+                "command": "pastemyst.commands.viewAll",
+                "title": "PasteMyst: View All Pastes"
             },
             {
                 "command": "pastemyst.commands.create",
