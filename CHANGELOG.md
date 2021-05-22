@@ -12,4 +12,4 @@
         - Changed logo format from jpg to png so its transparent
 
 # 1.1.1 - Quick Patch
-- Updated ReadeMe and Changelog
+- Updated ReadeMe and Changelog to match the new version
