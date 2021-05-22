@@ -29,6 +29,7 @@ This extension provides a way to paste to the website without leaving your IDE.
 
 # Planned Features
 - The ability to edit pastes
+- Getting a certain number of pastes from an account
 
 If you have more, I am open to suggestions!
 
