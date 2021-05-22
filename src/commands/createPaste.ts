@@ -3,6 +3,9 @@ import * as pastemyst from "pastemyst-ts";
 import * as open from "open";
 import * as authtoken from "./getAuthToken";
 
+/**
+ * Prompts the user to select files in the workspace and creates a paste from those files.
+ */
 export default async function createPaste(): Promise<void>{
 
     const files = vscode.workspace.textDocuments;
@@ -14,7 +17,7 @@ export default async function createPaste(): Promise<void>{
         items.push(item);
     });
 
-    // Select files to paste
+    // Select files to paste.
     let p = vscode.window.createQuickPick();
     p.placeholder = "Select files to send to PasteMyst";
     p.items = [...items];
@@ -48,12 +51,12 @@ export default async function createPaste(): Promise<void>{
         }
     }
 
-    // Send the paste to PasteMyst
+    // Send the paste to PasteMyst.
     async function sendPaste(selection : readonly vscode.QuickPickItem[], pastetitle : string, duration : any){
 
         let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
 
-        // Make a pasty for each file
+        // Make a pasty for each file.
         for (const p of selection){
             let filename = p.label.split("\\");
             let title = filename[filename.length - 1];
@@ -65,13 +68,13 @@ export default async function createPaste(): Promise<void>{
             pastes.push(pst);
         }
 
-        // Authorize token if provided
+        // Authorize token if provided.
         const token = authtoken.getToken();
         if (token !== undefined){
             pastemyst.authorize(token);
         }
 
-        // Create a new paste of pasties
+        // Create a new paste of pasties.
         let paste = pastemyst.pastes.createPaste({
             title: pastetitle,
             isPrivate: false,
@@ -79,7 +82,7 @@ export default async function createPaste(): Promise<void>{
             pasties: [...pastes]
         }).then(p => {
 
-            // Make sure there is no error in making a paste
+            // Make sure there is no error in making a paste.
             if (pastes.length === 0){
                 vscode.window.showErrorMessage("Error: Cannot create paste. No files selected.");
                 return;
@@ -93,7 +96,7 @@ export default async function createPaste(): Promise<void>{
                 return;
             }
             
-            // Generate PasteMyst link
+            // Generate PasteMyst link.
             let uri = `https://paste.myst.rs/${p?._id}`;
             vscode.window
             .showInformationMessage(`Paste successfully created at: ${uri}!`, "Open page")

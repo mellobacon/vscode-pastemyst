@@ -3,31 +3,35 @@ import * as pastemyst from "pastemyst-ts";
 import * as open from "open";
 import * as authtoken from "./getAuthToken";
 
+/**
+ * Prompts the user for a selection of text and makes a paste of that selection.
+ * Gives the choice of selecting multiple selections from different files.
+ */
 export default async function createPasteBySelection(): Promise<void>{
 
     let pastes : Omit<pastemyst.Pasty, "_id">[] = [];
     let code : string;
 
-    // Prompt user for selection
+    // Prompt user for selection.
     promptUser();
     
     async function promptUser(){
         await vscode.window.showInformationMessage("Select text to send to PasteMyst. Press OK when done.", "OK")
         .then(next => {
 
-            // Dont continue if the user closes the prompt
+            // Dont continue if the user closes the prompt.
             if (!next) { return; }
 
-            // Get the selected text
+            // Get the selected text.
             getSelection();
 
-            // Make sure there is text selected
+            // Make sure there is text selected.
             if (code === "" || undefined){
                 vscode.window.showErrorMessage("Error: Cannot create paste. No selection provided");
                 return;
             }
 
-            // Prompt user for another selection or just create the paste
+            // Prompt user for another selection or just create the paste.
             vscode.window.showInformationMessage("Select more text or send the paste", ...["Select more text", "Create Paste"])
             .then(selection => {
                 if (selection === "Select more text"){
@@ -43,15 +47,16 @@ export default async function createPasteBySelection(): Promise<void>{
     async function getSelection(){
         let editor = vscode.window.activeTextEditor;
 
-        // Get the file name
+        // Set the title of the paste as the file name.
         let filename = editor?.document.fileName.split("\\")!;
         let title = filename[filename?.length - 1];
 
-        // User gets selection
+        // User gets selection.
         let selection = editor?.selections;
 
-        // Format the text for each selection in the file so that it looks like this:
         /*
+        ...
+        Format the text for each selection in the file so that it looks like this
         ...
         selected text
         ...
@@ -70,12 +75,12 @@ export default async function createPasteBySelection(): Promise<void>{
         
         code = text.join("\n");
 
-        // Text must be provided
+        // Make sure text is provided.
         if (code === text[0]){
             code = "";
         }
 
-        // Create Pasties
+        // Create pasties.
         let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: code};
         pastes.push(pst);
     };
@@ -96,20 +101,20 @@ export default async function createPasteBySelection(): Promise<void>{
 
     function createPaste(pastetitle : string, duration : any){
 
-        // Authorize token if provided
+        // Authorize token if provided.
         const token = authtoken.getToken();
         if (token !== undefined){
             pastemyst.authorize(token);
         }
 
-        // Create paste
+        // Create paste.
         let paste = pastemyst.pastes.createPaste({
             title: pastetitle,
             expiresIn: duration,
             pasties: [...pastes]
         })
         .then(p => {
-            // Make sure there is no error in making a paste
+            // Make sure there is no error in making a paste.
             if (pastes.length === 0){
                 vscode.window.showErrorMessage("Error: Cannot create paste. No files selected.");
                 return;
@@ -123,7 +128,7 @@ export default async function createPasteBySelection(): Promise<void>{
                 return;
             }
             
-            // Generate PasteMyst link
+            // Generate PasteMyst link.
             let uri = `https://paste.myst.rs/${p?._id}`;
             vscode.window
             .showInformationMessage(`Paste successfully created at: ${uri}!`, "Open page")
