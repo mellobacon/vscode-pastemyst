@@ -54,31 +54,22 @@ export default async function createPasteBySelection(): Promise<void>{
         // User gets selection.
         let selection = editor?.selections;
 
-        /*
-        ...
-        Format the text for each selection in the file so that it looks like this
-        ...
-        selected text
-        ...
-        more selected text
-        ...
-        */
-        let text : string[] = ["...\n"];
+        // Format the text for each selection in the file.
+        let text : string[] = [];
         selection?.forEach(selection => {
             let selectedtext = vscode.window.activeTextEditor?.document.getText(selection);
+
+            // Make sure there is text in the selection.
             if (selectedtext === "" || selectedtext === "\n") { return; }
-            text.push(`${selectedtext}\n...\n`);
+            
+            text.push(`${selectedtext}\n`);
         });
 
+        // Set language based on file extension.
         let langext = title.split(".");
         let lang = await pastemyst.data.getLanguageByExtension(langext[langext.length - 1]);
         
         code = text.join("\n");
-
-        // Make sure text is provided.
-        if (code === text[0]){
-            code = "";
-        }
 
         // Create pasties.
         let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: code};
