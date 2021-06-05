@@ -8,16 +8,17 @@ import * as authtoken from "./getAuthToken";
  */
 export default async function createPaste(): Promise<void>{
 
+    // Get any files open in the current workspace.
     const files = vscode.workspace.textDocuments;
 
-    // Collect all workspace files as a quickpick item
+    // Convert files to a quickpick item.
     let items : vscode.QuickPickItem[] = [];
     files.forEach(file => {
         let item : vscode.QuickPickItem = {label: file.fileName, description: file.languageId, detail: file.getText()};
         items.push(item);
     });
 
-    // Select files to paste.
+    // Promp the user to select files to paste.
     let p = vscode.window.createQuickPick();
     p.placeholder = "Select files to send to PasteMyst";
     p.items = [...items];
@@ -58,12 +59,15 @@ export default async function createPaste(): Promise<void>{
 
         // Make a pasty for each file.
         for (const p of selection){
+            // Set title to the title of the file.
             let filename = p.label.split("\\");
             let title = filename[filename.length - 1];
 
+            // Set language based on file extension.
             let langext = title.split(".");
             let lang = await pastemyst.data.getLanguageByExtension(langext[langext.length - 1]);
 
+            // Create pasty and add to list of pasties.
             let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: p.detail!};
             pastes.push(pst);
         }

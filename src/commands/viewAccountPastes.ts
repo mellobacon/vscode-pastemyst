@@ -14,6 +14,7 @@ export default async function viewPastesFromAccount(): Promise<void> {
 
     // Authorize token if provided.
     const token = authtoken.getToken();
+    
     if (token !== undefined){
         pastemyst.authorize(token);
 
