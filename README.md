@@ -25,7 +25,7 @@ This extension provides a way to paste to the website without leaving your IDE.
     - Create pastes and send them to your account
 
 # Known Issues
-- None :)
+- Retrieving all pastes is currently not optimized. Will be fixed in the future.
 
 # Planned Features
 - The ability to edit pastes
