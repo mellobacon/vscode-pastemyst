@@ -13,3 +13,6 @@
 
 # 1.1.1 - Quick Patch
 - Updated ReadeMe and Changelog to match the new version
+
+# 1.1.2
+- Removed uneccesary formatting when making paste by selection
