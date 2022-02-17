@@ -72,7 +72,7 @@ export default async function createPasteBySelection(): Promise<void>{
         code = text.join("\n");
 
         // Create pasties.
-        let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: code};
+        let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang !== undefined ? lang.name : "Autodetect", code: code};
         pastes.push(pst);
     };
 
