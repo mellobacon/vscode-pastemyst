@@ -68,7 +68,7 @@ export default async function createPaste(): Promise<void>{
             let lang = await pastemyst.data.getLanguageByExtension(langext[langext.length - 1]);
 
             // Create pasty and add to list of pasties.
-            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang!.name, code: p.detail!};
+            let pst : Omit<pastemyst.Pasty, "_id"> = {title: title, language: lang !== undefined ? lang.name : "Autodetect", code: p.detail!};
             pastes.push(pst);
         }
 
